@@ -22,9 +22,10 @@ public final class WsConnectionPlugin extends JavaPlugin {
     }
     @Override
     public void onEnable() {
+        this.loadConf();
         Bukkit.getLogger().info("wsに接続中...");
         WsConnectionPlugin.wsConnection = new WsConnection();
-        WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.serverId);
+        WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
 
         getServer().getPluginManager().registerEvents(new WsPluginListener(), this);
         WsConnectionPlugin.wsConnection.sendEventData(new ServerStartedEvent());
