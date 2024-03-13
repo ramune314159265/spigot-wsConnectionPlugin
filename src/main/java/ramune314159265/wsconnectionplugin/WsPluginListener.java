@@ -3,6 +3,7 @@ package ramune314159265.wsconnectionplugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import ramune314159265.wsconnectionplugin.events.Event;
@@ -27,7 +28,7 @@ public class WsPluginListener implements Listener {
 
 	@EventHandler
 	public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event){
-		if(!Objects.requireNonNull(event.getAdvancement().getDisplay()).shouldAnnounceChat()){
+		if(Objects.requireNonNull(event.getAdvancement().getDisplay()).isHidden()){
 			return;
 		}
 		AdvancementData advancementData = new AdvancementData(
@@ -37,5 +38,10 @@ public class WsPluginListener implements Listener {
 		);
 		Event eventDataToSend = new PlayerAdvDoneEvent(event.getPlayer().getName(),advancementData);
 		WsConnectionPlugin.wsConnection.sendEventData(eventDataToSend);
+	}
+
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent event){
+		event.setCancelled(true);
 	}
 }
