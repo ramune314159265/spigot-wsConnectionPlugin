@@ -2,6 +2,6 @@ name: WsConnectionPlugin
 version: '${version}'
 main: ramune314159265.wsconnectionplugin.WsConnectionPlugin
 api-version: '1.20'
-load: STARTUP
+load: POSTWORLD
 authors: [ramune314159265]
 description: ws Connection for Spigot
