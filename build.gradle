@@ -55,3 +55,6 @@ dependencies {
 shadowJar {
     zip64 true
 }
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
