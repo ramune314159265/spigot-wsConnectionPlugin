@@ -8,7 +8,7 @@ public class PlayerDiedEvent extends Event{
 	public String reason;
 
 	public PlayerDiedEvent(String playerId,String reason) {
-		this.type = "server_started";
+		this.type = "player_died";
 		this.serverId = WsConnectionPlugin.serverId;
 		this.playerId = playerId;
 		this.reason = reason;
