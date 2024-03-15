@@ -2,6 +2,7 @@ package ramune314159265.wsconnectionplugin;
 
 import org.bukkit.Bukkit;
 import com.google.gson.Gson;
+import ramune314159265.wsconnectionplugin.events.WsConnectedEvent;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -22,6 +23,9 @@ public class WsConnection {
 			@Override
 			public void onOpen(WebSocket webSocket) {
 				Bukkit.getLogger().info("wsに接続しました");
+				Gson gson = new Gson();
+				String json = gson.toJson(new WsConnectedEvent());
+				webSocket.sendText(json,true);
 			}
 
 			@Override
