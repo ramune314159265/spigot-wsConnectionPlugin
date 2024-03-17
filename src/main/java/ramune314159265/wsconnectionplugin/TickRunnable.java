@@ -9,7 +9,7 @@ public class TickRunnable implements Runnable {
 
 	public void run() {
 		long lastTickElapsed = System.currentTimeMillis() - lastTickTime;
-		TickRunnable.Tps = (float) (1000 / lastTickElapsed);
+		TickRunnable.Tps = 1000f / lastTickElapsed;
 		lastTickTime = System.currentTimeMillis();
 		TickRunnable.lastTickTimestamp = new Date().getTime();
 	}
