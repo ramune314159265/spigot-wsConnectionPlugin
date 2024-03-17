@@ -1,8 +1,7 @@
 package ramune314159265.wsconnectionplugin;
 
-import org.bukkit.Bukkit;
 import com.moandjiezana.toml.Toml;
-
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import ramune314159265.wsconnectionplugin.events.EverySecond;
 import ramune314159265.wsconnectionplugin.events.ServerStartedEvent;
@@ -16,64 +15,65 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public final class WsConnectionPlugin extends JavaPlugin {
-    Timer timer;
+	public static String wsUrl;
+	public static String serverId;
+	static WsConnection wsConnection;
+	Timer timer;
 
-    static WsConnection wsConnection;
-    public static String wsUrl;
-    public static String serverId;
-    public WsConnectionPlugin(){
+	public WsConnectionPlugin() {
 
-    }
-    @Override
-    public void onEnable() {
-        this.loadConf();
-        Bukkit.getLogger().info("wsに接続中...");
-        WsConnectionPlugin.wsConnection = new WsConnection();
-        WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
+	}
 
-        getServer().getPluginManager().registerEvents(new WsPluginListener(), this);
-        WsConnectionPlugin.wsConnection.sendEventData(new ServerStartedEvent());
+	@Override
+	public void onEnable() {
+		this.loadConf();
+		Bukkit.getLogger().info("wsに接続中...");
+		WsConnectionPlugin.wsConnection = new WsConnection();
+		WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
 
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this,new TickRunnable(),0L,0L);
+		getServer().getPluginManager().registerEvents(new WsPluginListener(), this);
+		WsConnectionPlugin.wsConnection.sendEventData(new ServerStartedEvent());
 
-        this.timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                WsConnectionPlugin.wsConnection.sendEventData(new EverySecond(TickRunnable.Tps,TickRunnable.lastTickTimestamp));
-            }
-        },1000,1000);
-    }
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickRunnable(), 0L, 0L);
 
-    @Override
-    public void onDisable() {
-        this.timer.cancel();
-        WsConnectionPlugin.wsConnection.sendEventData(new ServerStoppedEvent());
+		this.timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				WsConnectionPlugin.wsConnection.sendEventData(new EverySecond(TickRunnable.Tps, TickRunnable.lastTickTimestamp));
+			}
+		}, 1000, 1000);
+	}
 
-        Bukkit.getLogger().info("wsを切断中...");
-        WsConnectionPlugin.wsConnection.disconnect();
-    }
+	@Override
+	public void onDisable() {
+		this.timer.cancel();
+		WsConnectionPlugin.wsConnection.sendEventData(new ServerStoppedEvent());
 
-    public void loadConf(){
-        File configFile = new File(getDataFolder(),"conf.toml");
-        if(!configFile.getParentFile().exists()){
-            configFile.getParentFile().mkdirs();
-        }
+		Bukkit.getLogger().info("wsを切断中...");
+		WsConnectionPlugin.wsConnection.disconnect();
+	}
 
-        if(!configFile.exists()){
-            try(InputStream input = WsConnectionPlugin.class.getResourceAsStream("/" + configFile.getName())){
-                if (input != null) {
-                    Files.copy(input, configFile.toPath());
-                } else {
-                    configFile.createNewFile();
-                }
-            }catch (IOException e) {
-                Bukkit.getLogger().warning(e.toString());
-            }
-        }
+	public void loadConf() {
+		File configFile = new File(getDataFolder(), "conf.toml");
+		if (!configFile.getParentFile().exists()) {
+			configFile.getParentFile().mkdirs();
+		}
 
-        Toml configToml = new Toml().read(configFile);
+		if (!configFile.exists()) {
+			try (InputStream input = WsConnectionPlugin.class.getResourceAsStream("/" + configFile.getName())) {
+				if (input != null) {
+					Files.copy(input, configFile.toPath());
+				} else {
+					configFile.createNewFile();
+				}
+			} catch (IOException e) {
+				Bukkit.getLogger().warning(e.toString());
+			}
+		}
 
-        WsConnectionPlugin.wsUrl = configToml.getString("wsUrl");
-        WsConnectionPlugin.serverId = configToml.getString("serverId");
-    }
+		Toml configToml = new Toml().read(configFile);
+
+		WsConnectionPlugin.wsUrl = configToml.getString("wsUrl");
+		WsConnectionPlugin.serverId = configToml.getString("serverId");
+	}
 }

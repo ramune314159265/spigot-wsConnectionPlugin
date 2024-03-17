@@ -3,7 +3,7 @@ package ramune314159265.wsconnectionplugin.events;
 import ramune314159265.wsconnectionplugin.AdvancementData;
 import ramune314159265.wsconnectionplugin.WsConnectionPlugin;
 
-public class PlayerAdvDoneEvent extends Event{
+public class PlayerAdvDoneEvent extends Event {
 	public String serverId;
 	public String playerId;
 	public AdvancementData advancement;
