@@ -20,7 +20,10 @@ public class WsPluginListener implements Listener {
 
 	@EventHandler
 	public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
-		if (Objects.requireNonNull(event.getAdvancement().getDisplay()).isHidden()) {
+		if (Objects.isNull(event.getAdvancement().getDisplay())) {
+			return;
+		}
+		if (event.getAdvancement().getDisplay().isHidden()) {
 			return;
 		}
 		AdvancementData advancementData = new AdvancementData(
