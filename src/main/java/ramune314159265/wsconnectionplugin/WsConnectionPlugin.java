@@ -39,7 +39,7 @@ public final class WsConnectionPlugin extends JavaPlugin {
 		this.timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				WsConnectionPlugin.wsConnection.sendEventData(new EverySecond(TickRunnable.Tps, TickRunnable.lastTickTimestamp));
+				WsConnectionPlugin.wsConnection.sendEventData(new EverySecond(TickRunnable.tps, TickRunnable.lastTickTimestamp));
 			}
 		}, 1000, 1000);
 	}
