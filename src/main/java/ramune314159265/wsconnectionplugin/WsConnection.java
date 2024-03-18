@@ -65,7 +65,16 @@ public class WsConnection {
 		if (Objects.isNull(this.ws)) {
 			return;
 		}
+		if (this.ws.isOutputClosed()) {
+			return;
+		}
 
-		this.ws.sendClose(1000, "disconnect() called");
+		try {
+			CompletableFuture<WebSocket> end = this.ws.sendClose(WebSocket.NORMAL_CLOSURE, "disconnect() called");
+			end.get();
+		} catch (InterruptedException | ExecutionException e) {
+			Bukkit.getLogger().warning("disconnect error");
+		}
+
 	}
 }
