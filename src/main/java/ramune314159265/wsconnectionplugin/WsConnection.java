@@ -36,7 +36,6 @@ public class WsConnection {
 
 			@Override
 			public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-				Bukkit.getLogger().info((String) data);
 				return null;
 			}
 		};
@@ -75,6 +74,5 @@ public class WsConnection {
 		} catch (InterruptedException | ExecutionException e) {
 			Bukkit.getLogger().warning("disconnect error");
 		}
-
 	}
 }

@@ -34,6 +34,8 @@ public final class WsConnectionPlugin extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new WsPluginListener(), this);
 		WsConnectionPlugin.wsConnection.sendEventData(new ServerStartedEvent());
 
+		getCommand("reconnectws").setExecutor(new WsCommandExecutor());
+
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickRunnable(), 0L, 0L);
 
 		this.timer = new Timer();

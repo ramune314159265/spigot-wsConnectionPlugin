@@ -5,3 +5,20 @@ api-version: '1.20'
 load: POSTWORLD
 authors: [ramune314159265]
 description: ws Connection for Spigot
+
+commands:
+  reconnectws:
+    description: wsを再接続します
+    aliases: [rcws]
+    permission: wsconnectionplugin.command.hat
+    permission-message: You do not have permission to perform this command.
+    usage: /reconnectws
+
+permissions:
+  wsconnectionplugin.command.*:
+    description: Allows you to perform commands in this plugin.
+    children:
+      wsconnectionplugin.command.reconnectws: true
+  wsconnectionplugin.command.reconnectws:
+    description: Allows you to perform /reconnectws command.
+    default: op
