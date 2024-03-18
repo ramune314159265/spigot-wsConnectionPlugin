@@ -10,6 +10,7 @@ public class WsCommandExecutor implements CommandExecutor {
 		WsConnectionPlugin.wsConnection.disconnect();
 		WsConnectionPlugin.wsConnection = new WsConnection();
 		WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
+		sender.sendMessage("再接続しました");
 		return true;
 	}
 }
