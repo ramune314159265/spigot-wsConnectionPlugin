@@ -78,4 +78,10 @@ public final class WsConnectionPlugin extends JavaPlugin {
 		WsConnectionPlugin.wsUrl = configToml.getString("wsUrl");
 		WsConnectionPlugin.serverId = configToml.getString("serverId");
 	}
+
+	public static void reconnectWs(){
+		WsConnectionPlugin.wsConnection.disconnect();
+		WsConnectionPlugin.wsConnection = new WsConnection();
+		WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
+	}
 }
