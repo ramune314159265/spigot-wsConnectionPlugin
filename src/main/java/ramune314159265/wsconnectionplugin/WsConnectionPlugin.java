@@ -17,17 +17,19 @@ import java.util.TimerTask;
 public final class WsConnectionPlugin extends JavaPlugin {
 	public static String wsUrl;
 	public static String serverId;
+	public static boolean isOpeningWs;
 	static WsConnection wsConnection;
 	Timer timer;
 
 	public WsConnectionPlugin() {
-
+		WsConnectionPlugin.isOpeningWs = false;
 	}
 
 	@Override
 	public void onEnable() {
 		this.loadConf();
 		Bukkit.getLogger().info("wsに接続中...");
+		WsConnectionPlugin.isOpeningWs = true;
 		WsConnectionPlugin.wsConnection = new WsConnection();
 		WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
 

@@ -8,9 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
 public class WsConnection {
 	public WebSocket ws;
@@ -31,7 +29,26 @@ public class WsConnection {
 			@Override
 			public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
 				Bukkit.getLogger().info("wsから切断しました");
+				if (WsConnectionPlugin.isOpeningWs) {
+					Bukkit.getLogger().info("3秒後に再接続します");
+					ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+					exec.schedule(() -> {
+						WsConnectionPlugin.reconnectWs();
+						exec.shutdown();
+					}, 3, TimeUnit.SECONDS);
+				}
 				return null;
+			}
+
+			@Override
+			public void onError(WebSocket webSocket, Throwable error) {
+				Bukkit.getLogger().warning(error.toString());
+				Bukkit.getLogger().warning("3秒後に再接続します");
+				ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+				exec.schedule(() -> {
+					WsConnectionPlugin.reconnectWs();
+					exec.shutdown();
+				}, 3, TimeUnit.SECONDS);
 			}
 
 			@Override
@@ -40,11 +57,16 @@ public class WsConnection {
 			}
 		};
 
-		CompletableFuture<WebSocket> comp = wsb.buildAsync(URI.create(wsUrl), listener);
 		try {
+			CompletableFuture<WebSocket> comp = wsb.buildAsync(URI.create(wsUrl), listener);
 			this.ws = comp.get();
+			this.ws.request(100000);
 		} catch (ExecutionException | InterruptedException e) {
-			Bukkit.getLogger().warning("wsに接続できませんでした");
+			ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+			exec.schedule(() -> {
+				WsConnectionPlugin.reconnectWs();
+				exec.shutdown();
+			}, 3, TimeUnit.SECONDS);
 		}
 	}
 
