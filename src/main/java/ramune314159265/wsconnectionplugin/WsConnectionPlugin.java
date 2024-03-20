@@ -54,6 +54,7 @@ public final class WsConnectionPlugin extends JavaPlugin {
 		WsConnectionPlugin.wsConnection.sendEventData(new ServerStoppedEvent());
 
 		Bukkit.getLogger().info("wsを切断中...");
+		WsConnectionPlugin.isOpeningWs = false;
 		WsConnectionPlugin.wsConnection.disconnect();
 	}
 
