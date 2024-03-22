@@ -23,9 +23,6 @@ public class WsPluginListener implements Listener {
 		if (Objects.isNull(event.getAdvancement().getDisplay())) {
 			return;
 		}
-		if (event.getAdvancement().getDisplay().isHidden()) {
-			return;
-		}
 		AdvancementData advancementData = new AdvancementData(
 				event.getAdvancement().getDisplay().getTitle(),
 				event.getAdvancement().getDisplay().getType().toString(),
