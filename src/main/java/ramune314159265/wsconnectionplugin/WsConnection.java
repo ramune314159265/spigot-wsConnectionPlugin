@@ -30,12 +30,12 @@ public class WsConnection {
 			public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
 				Bukkit.getLogger().info("wsから切断しました");
 				if (WsConnectionPlugin.isOpeningWs) {
-					Bukkit.getLogger().info("3秒後に再接続します");
+					Bukkit.getLogger().info("1秒後に再接続します");
 					ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 					exec.schedule(() -> {
 						WsConnectionPlugin.reconnectWs();
 						exec.shutdown();
-					}, 3, TimeUnit.SECONDS);
+					}, 1, TimeUnit.SECONDS);
 				}
 				return null;
 			}
@@ -43,12 +43,12 @@ public class WsConnection {
 			@Override
 			public void onError(WebSocket webSocket, Throwable error) {
 				Bukkit.getLogger().warning(error.toString());
-				Bukkit.getLogger().warning("3秒後に再接続します");
+				Bukkit.getLogger().warning("1秒後に再接続します");
 				ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 				exec.schedule(() -> {
 					WsConnectionPlugin.reconnectWs();
 					exec.shutdown();
-				}, 3, TimeUnit.SECONDS);
+				}, 1, TimeUnit.SECONDS);
 			}
 
 			@Override
@@ -66,7 +66,7 @@ public class WsConnection {
 			exec.schedule(() -> {
 				WsConnectionPlugin.reconnectWs();
 				exec.shutdown();
-			}, 3, TimeUnit.SECONDS);
+			}, 1, TimeUnit.SECONDS);
 		}
 	}
 
