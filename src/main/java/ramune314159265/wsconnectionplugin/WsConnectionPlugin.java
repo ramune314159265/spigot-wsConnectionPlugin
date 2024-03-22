@@ -83,8 +83,10 @@ public final class WsConnectionPlugin extends JavaPlugin {
 	}
 
 	public static void reconnectWs(){
+		WsConnectionPlugin.isOpeningWs = false;
 		WsConnectionPlugin.wsConnection.disconnect();
 		WsConnectionPlugin.wsConnection = new WsConnection();
 		WsConnectionPlugin.wsConnection.init(WsConnectionPlugin.wsUrl);
+		WsConnectionPlugin.isOpeningWs = true;
 	}
 }
