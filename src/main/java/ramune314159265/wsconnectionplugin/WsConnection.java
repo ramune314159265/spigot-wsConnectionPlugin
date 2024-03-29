@@ -76,10 +76,14 @@ public class WsConnection {
 			return;
 		}
 
-		Gson gson = new Gson();
-		String json = gson.toJson(data);
+		try {
+			Gson gson = new Gson();
+			String json = gson.toJson(data);
 
-		this.ws.sendText(json, true);
+			this.ws.sendText(json, true);
+		} catch (Exception e) {
+			Bukkit.getLogger().warning("送信処理中にエラーが発生しました");
+		}
 	}
 
 	public void disconnect() {
