@@ -27,7 +27,8 @@ public class WsPluginListener implements Listener {
 				event.getAdvancement().getDisplay().getTitle(),
 				event.getAdvancement().getDisplay().getType().toString(),
 				event.getAdvancement().getDisplay().getDescription(),
-				event.getAdvancement().getKey().getKey()
+				event.getAdvancement().getKey().getKey(),
+				event.getAdvancement().getKey().getNamespace()
 		);
 		Event eventDataToSend = new PlayerAdvDoneEvent(event.getPlayer().getName(), advancementData);
 		WsConnectionPlugin.wsConnection.sendEventData(eventDataToSend);
