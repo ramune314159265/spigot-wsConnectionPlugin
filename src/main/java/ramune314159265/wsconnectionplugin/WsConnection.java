@@ -81,6 +81,10 @@ public class WsConnection {
 			String json = gson.toJson(data);
 
 			this.ws.sendText(json, true);
+			ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+			exec.schedule(() -> {
+				this.ws.sendText(json, true);
+			}, 3, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			Bukkit.getLogger().warning("送信処理中にエラーが発生しました");
 		}
